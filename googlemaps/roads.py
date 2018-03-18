@@ -50,10 +50,11 @@ def snap_to_roads(client, path, interpolate=False):
     if interpolate:
         params["interpolate"] = "true"
 
-    return client._request("/v1/snapToRoads", params,
+    result = client._request("/v1/snapToRoads", params,
                        base_url=_ROADS_BASE_URL,
                        accepts_clientid=False,
-                       extract_body=_roads_extract).get("snappedPoints", [])
+                       extract_body=_roads_extract)
+    return result.get("snappedPoints", []), result.get("placeID", [])
 
 def nearest_roads(client, points):
     """Find the closest road segments for each point
